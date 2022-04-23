@@ -1,0 +1,19 @@
+1) NO ENCUENTRA ARCHIVO FIREBASE.JSON, ENCONTRAR BACKUP DEL ARCHIVO EN VERSION ANTERIOR O LEER SIGUIENTE CODIGO:
+
+FIREBASE.JSON FUNCIONAL PARA PROYECTO VIDA INCLUSIVA:
+{
+  "hosting": {
+    "public": "public",
+    "rewrites": [
+      {
+        "source": "**",
+        "function": "app"
+      }
+      
+     
+    ]
+    
+  }
+}
+
+EN PROYECTO VIDA INCLUSIVA NO INICIALIZAR #FIREBASE INIT FUNCTIONS DE NUEVO.

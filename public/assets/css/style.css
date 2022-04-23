@@ -38,12 +38,11 @@ ul{
  margin:0;
  padding-bottom: 2rem;
 }
-
 /* FORM STYLES */
 .contact form{
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap:20px;
+  grid-template-columns: 50%;
+  grid-gap:1px;
 }
 
 .contact form label{
@@ -59,7 +58,7 @@ ul{
 }
 
  .contact form input, .contact form textarea{
-  width:100%;
+  width:90%;
   padding:1em;
   border:1px solid #99cdfa;
 }

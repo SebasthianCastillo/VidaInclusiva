@@ -9,10 +9,6 @@ const smtpTransport = require('nodemailer-smtp-transport');
 const cors = require("cors")({
   origin: true
 });
-/*const cors = require("cors")({
-    origin: true
-  });
-*/
 const app = express();
 app.locals.layout = false;
 //View engine setup
@@ -28,16 +24,26 @@ app.get('/',(req,res)=>{
 app.get('/fono',(req,res)=>{
     res.render('fono');
 });
+app.get('/kine',(req,res)=>{
+  res.render('kine');
+});
+app.get('/terapia',(req,res)=>{
+  res.render('terapia');
+});
 app.get('/servicios',(req,res) =>{
-    
     res.render('servicios');
 });
 app.get('/convenios',(req,res) => {
-    
     res.render('convenios');
 });
 app.get('/contactenos',(req,res)=> {
-    res.redirect('/#contacto');
+    res.render('contactenos');
+});
+app.get('/nutricion',(req,res)=> {
+  res.render('nutri');
+});
+app.get('/neuro',(req,res)=> {
+  res.render('neuro');
 });
 app.get('/contact', (req,res) => {
     res.render('contact');
@@ -63,38 +69,71 @@ app.post('/send',(req,res) => {
     <h4>Mensaje</h4>
     <p>${req.body.mensaje}</p>
      `;
-     
-  let transporter = nodemailer.createTransport({
+   */
+  app.post('/emailsegundo',(req, res) => {
+    let transporter = nodemailer.createTransport({
+    service:'gmail',
     host: 'smtp.gmail.com',
     port: 587,
-    secure: false, 
+    secure: false,
     auth: {
-        user: 'espaciovidainclusiva@gmail.com', 
-        pass: 'Masaifono123'  
+         user: 'espaciovidainclusiva@gmail.com',
+         pass: 'Masaifono123'
     },
-    
-  });
-  let mailOptions = {
-      from: '"Solicitud Vida Inclusiva" <espaciovidainclusiva@gmail.com>', 
-      to: 'espaciovidainclusiva@gmail.com', 
-      subject: 'Solicitud Reserva', 
-      text: 'Hello world?', 
-      html: output 
-  };
-  
-  // send mail with defined transport object
-  transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-          return console.log(error);
-      }
-     /* console.log('Message sent: %s', info.messageId);   
-      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-      res.render('contact', {msg:'Email ha sido enviado, nos comunicaremos contigo a la brevedad.'});
-      
-  });
-  });*/
+    tls:{
+      rejectUnauthorized:false
+    }
+});
+ let mailOptions = {
+  from: '"Solicitud Vida Inclusiva" <espaciovidainclusiva@gmail.com>', 
+  to: 'espaciovidainclusiva@gmail.com', 
+  subject: 'Solicitud Reserva', 
+  text: 'Hello world?', 
+  html: `
+  <p>Tienes una nueva solicitud</p>
+  <h4>Detalles de contacto</h4>
+  <ul>
+  <li>Nombre: ${req.body.nombre}</li>
+  <li>Mail: ${req.body.email}</li>
+  <li>Contacto: ${req.body.numerocontacto}</li>
+  <ul>
+  <h4>Mensaje</h4>
+  <p>${req.body.mensaje}</p>
+   `
+};
+transporter.sendMail(mailOptions, (error, info) => {
+if (error) {
+    return console.log(error);
+}
+console.log("Message send Successfully");
+res.render('index', {layout: false});
+});
+});
+
+
+
+
+
   app.post('/send-email',(req, res) => {
-    const output = `
+      let transporter = nodemailer.createTransport({
+      service:'gmail',
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+           user: 'espaciovidainclusiva@gmail.com',
+           pass: 'Masaifono123'
+      },
+      tls:{
+        rejectUnauthorized:false
+      }
+});
+   let mailOptions = {
+    from: '"Solicitud Vida Inclusiva" <espaciovidainclusiva@gmail.com>', 
+    to: 'espaciovidainclusiva@gmail.com', 
+    subject: 'Solicitud Reserva', 
+    text: 'Hello world?', 
+    html: `
     <p>Tienes una nueva solicitud</p>
     <h4>Detalles de contacto</h4>
     <ul>
@@ -106,34 +145,16 @@ app.post('/send',(req,res) => {
     <ul>
     <h4>Mensaje</h4>
     <p>${req.body.mensaje}</p>
-     `;
-    let transporter = nodeMailer.createTransport({
-      service:'gmail',
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      auth: {
-           user: 'espaciovidainclusiva@gmail.com',
-           pass: 'Masaifono123'
-      }
-});
-   let mailOptions = {
-    from: '"Solicitud Vida Inclusiva" <espaciovidainclusiva@gmail.com>', 
-    to: 'espaciovidainclusiva@gmail.com', 
-    subject: 'Solicitud Reserva', 
-    text: 'Hello world?', 
-    html: output 
+     `
 };
 transporter.sendMail(mailOptions, (error, info) => {
   if (error) {
       return console.log(error);
   }
   console.log("Message send Successfully");
-  res.render('index');
+  res.render('contact', {msg:'Email ha sido enviado, nos comunicaremos contigo a la brevedad.'});
 });
 });
-  
-
 //app.listen(process.env.port || 3000);
 //console.log('Server started...');
 exports.app = functions.https.onRequest(app);
